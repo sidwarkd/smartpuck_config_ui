@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Smart Puck Setup</title>
+  <link rel='stylesheet' type='text/css' href='style.css'>
+  <link rel='shortcut icon' href='favicon.png'>
+</head>
+
+<body>
+  <h1 style='text-decoration: underline;'>Smart Puck Setup</h1>
+  
+  <div id='initial-div' style='display: none'>
+  <h2>Let's get your puck connected!</h2>
+    <p>
+      <ol>
+        <li>Plug in your puck. You can connect it to a wall charger or a computer.</li>
+        <image src='http://via.placeholder.com/300x150' />
+        <li>Disconnect from your current Wi-Fi and connect to the new Wi-Fi hotspot created by your puck. It will appear as <strong>MySmartPuck-XXXXXX</strong> on your network list.</li>
+        <image src='http://via.placeholder.com/300x150' />
+        <li>Once connected press <strong>Next</strong></li>
+      </ol>
+    <p>
+    <button id='initial-button' type='button'>Next</button>
+  </div>
+  
+  <div id='scan-div' style='display: none'>
+    <p>I found your puck! Now we just need to tell it how to connect to your local network. Click the <strong>Scan</strong> button below to search for wireless networks.</p>
+    <button id='scan-button' type='button'>Scan</button>
+  </div>
+
+  <div id='networks-div'>
+  </div>
+  
+  <div id='connect-div' style='display: none'>
+    <p>Select your network from the list above, enter your password, and click <strong>Connect</strong>.</p>
+    <form id='connect-form'>
+      <input type='password' id='password' size='25' placeholder='password'/>
+      <button type='button' class='input-helper' id='show-button'>Show</button>
+      <button type='submit' id='connect-button'>Connect</button>
+    </form>
+    <p>Don't see your network? Move your puck closer to your Wi-Fi source and then click the <strong>Scan Again</strong> button above.</p>
+  </div>
+
+  <div id='device-id-div' style='display: none'>
+    <h3>Device Serial Number:</h3>
+    <p id='device-id' size='20' value='' disabled></p>
+  </div>
+
+  <div id='final-div' style='display:none;'>
+    <h2>Your Puck is Configured!</h2>
+    <p>If it hasn't already, it should update with the latest stats within the next couple of minutes. After that the stats will be refreshed after each game. 
+      All you have to do is keep it within Wi-Fi range and it will take care of the rest.</p>
+    <p>If your puck doesn't update it's probably a password issue. If that happens, simply reload this page and go through the configuration steps again.</p>
+    <h3>Enjoy Your Puck</h3>
+  </div>
+
+  <script src='rsa-utils/jsbn_1.js'></script>
+  <script src='rsa-utils/jsbn_2.js'></script>
+  <script src='rsa-utils/prng4.js'></script>
+  <script src='rsa-utils/rng.js'></script>
+  <script src='rsa-utils/rsa.js'></script>
+  <script src='script.js'></script>
+
+</body>
+
+
+</html>
+
+
+
+
