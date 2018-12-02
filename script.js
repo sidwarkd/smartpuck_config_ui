@@ -29,29 +29,11 @@ var public_key_callback = {
     public_key = resp['b'];
     // Pull N and E out of device key and use to set public key
     rsa.setPublic(public_key.substring(58,58+256), public_key.substring(318,318+6));
-    if (claim_code) {
-      console.log('Setting claim code', claim_code);
-      postRequest(base_url+'set', { k: 'cc', v: claim_code }, claim_code_callback);
-    } else {
-      getRequest(base_url+'device-id', device_id_callback);
-    }
-  },
-  error: function(error, resp){
-    console.log(error);
-    window.alert('I\'m having trouble finding your puck. Make sure the device you are on is connected to the MySmartPuck Wi-Fi network and try again.');
-    enableButtons();
-    initialButton.innerHTML = "Retry";
-  }
-};
-
-var claim_code_callback = {
-  success: function(resp){
-    console.log('Claim code set.', resp);
     getRequest(base_url+'device-id', device_id_callback);
   },
   error: function(error, resp){
     console.log(error);
-    window.alert('There was a problem writing important information to your device. Please verify your connection to the device and try again.');
+    window.alert('I\'m having trouble finding your puck. Make sure the phone or computer you are on is connected to the MySmartPuck WiFi network and try again.');
     enableButtons();
     initialButton.innerHTML = "Retry";
   }
@@ -69,7 +51,7 @@ var device_id_callback = {
     console.log(error);
     var msg = 'COMMUNICATION_ERROR';
     deviceID.innerText = msg;
-    window.alert('Something went wrong and I couldn\'t read your puck\'s serial number. Make sure the device you are on is connected to the MySmartPuck Wi-Fi network and try again.');
+    window.alert('Something went wrong and I couldn\'t read your puck\'s serial number. Make sure the device you are on is connected to the MySmartPuck WiFi network and try again.');
   },
   regardless: function() {
     enableButtons();
@@ -87,7 +69,6 @@ var scan = function(){
   document.getElementById('networks-div').style.display = 'none';
   
   getRequest(base_url+'scan-ap', scan_callback, 8000); // Scan needs a slightly longer timeout than the default
-
 };
 
 var scan_callback = {
@@ -100,8 +81,9 @@ var scan_callback = {
     if(network_list.length > 0){
       for(var i=0; i < network_list.length; i++){
         ssid = network_list[i]['ssid'];
+        rssi = network_list[i]['rssi'];
         console.log(network_list[i]);
-        add_wifi_option(networks_div, ssid);
+        add_wifi_option(networks_div, ssid, rssi);
         // Show password and connect
         document.getElementById('connect-div').style.display = 'block';
       }
@@ -112,7 +94,7 @@ var scan_callback = {
 
   error: function(error){
     console.log('Scanning error:' + error);
-    document.getElementById('networks-div').innerHTML = '<p class=\'scanning-error\'>Dangit! Looks like I lost my connection to your puck. Try moving your puck closer to your Wi-Fi source, <a href=\'javascript:document.location.reload()\'>refresh the page</a> and try again.</p>';
+    document.getElementById('networks-div').innerHTML = '<p class=\'scanning-error\'>Dangit! Looks like I lost my connection to your puck. Try moving your puck closer to your WiFi source, <a href=\'javascript:document.location.reload()\'>refresh the page</a> and try again.</p>';
   },
 
   regardless: function(){
@@ -157,7 +139,7 @@ var configure_callback = {
   },
   error: function(error, resp){
     console.log('Error sending credentials to the puck: ' + error);
-    window.alert('Something went wrong! Move the puck closer to your Wi-Fi source and try again.');
+    window.alert('Something went wrong! Move the puck closer to your WiFi source and try again.');
     connectButton.innerHTML = 'Retry';
     enableButtons();
   }
@@ -176,10 +158,12 @@ var connect_callback = {
     document.getElementById('final-div').style.display = 'block';
   },
   error: function(error, resp){
-    console.log('Error connecting to the Wi-Fi network: ' + error);
-    window.alert('Something went wrong connecting to your Wi-Fi network! Move the puck closer to your Wi-Fi source and try again.');
-    connectButton.innerHTML = 'Retry';
-    enableButtons();
+    document.getElementById('initial-div').style.display = 'none';
+    document.getElementById('device-id-div').style.display = 'none';
+    document.getElementById('scan-div').style.display = 'none';
+    document.getElementById('networks-div').style.display = 'none';
+    document.getElementById('connect-div').style.display = 'none';
+    document.getElementById('final-div').style.display = 'block';
   }
 
 }
@@ -198,7 +182,7 @@ var enableButtons = function (){
   scanButton.disabled = false;
 };
 
-var add_wifi_option = function(parent, ssid){
+var add_wifi_option = function(parent, ssid, strength){
   var radio = document.createElement('INPUT');
   radio.type = 'radio';
   radio.value = ssid;
@@ -211,6 +195,10 @@ var add_wifi_option = function(parent, ssid){
   var label = document.createElement('label');
   label.htmlFor = ssid;
   label.innerHTML = ssid;
+  var rssi = document.createElement('span');
+  rssi.className = rssiToCssClass(strength);
+  rssi.title = 'RSSI: ' + strength;
+  label.appendChild(rssi)
   div.appendChild(label);
   parent.appendChild(div);
 };
@@ -313,10 +301,6 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2]/* .replace(/\+/g, " ")*/); // "+" is important in CC
 }
 
-// Executed immediately on load -----------------------------------------------
-
-var claim_code = getParameterByName('claim_code'); // read the claim code from QS
-
 // Attach events
 if (scanButton.addEventListener) {  // For all major browsers
     initialButton.addEventListener('click', getDeviceInfo)
@@ -335,4 +319,25 @@ if (window.location.hostname === '192.168.0.1') {
   document.getElementById('device-id-div').style.display = 'block';
 } else {
   document.getElementById('initial-div').style.display = 'block';
+}
+
+function rssiToCssClass(rssi){
+  // -30dBm Amazing
+  // -67dBm Very Good
+  // -70dBm Okay
+  // -80dBm Not Good
+  // -90dBm Unusable
+
+  classString = 'signal-indicator ';
+  if (rssi >= -67){
+    classString += 'good-wifi';
+  }
+  else if (rssi >= -80){
+    classString += 'ok-wifi';
+  }
+  else{
+    classString += 'bad-wifi';
+  }
+
+  return classString;
 }
