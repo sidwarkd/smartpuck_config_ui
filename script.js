@@ -23,6 +23,13 @@ var getDeviceInfo = function() {
   getRequest(base_url+'public-key', public_key_callback);
 }
 
+function uuidv4() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
+}
+
 var public_key_callback = {
   success: function(resp){
     console.log('Public key: ' + resp['b']);
@@ -80,10 +87,13 @@ var scan_callback = {
     
     if(network_list.length > 0){
       for(var i=0; i < network_list.length; i++){
+        // give each entry a unique id
+        var uuid = uuidv4();
+        network_list[i]['uuid'] = uuid;
         ssid = network_list[i]['ssid'];
         rssi = network_list[i]['rssi'];
         console.log(network_list[i]);
-        add_wifi_option(networks_div, ssid, rssi);
+        add_wifi_option(networks_div, ssid, rssi, uuid);
         // Show password and connect
         document.getElementById('connect-div').style.display = 'block';
       }
@@ -182,11 +192,11 @@ var enableButtons = function (){
   scanButton.disabled = false;
 };
 
-var add_wifi_option = function(parent, ssid, strength){
+var add_wifi_option = function(parent, ssid, strength, uuid){
   var radio = document.createElement('INPUT');
   radio.type = 'radio';
   radio.value = ssid;
-  radio.id = ssid;
+  radio.id = uuid;
   radio.name = 'ssid';
   radio.className = 'radio' ;
   var div = document.createElement('DIV');
@@ -206,8 +216,8 @@ var add_wifi_option = function(parent, ssid, strength){
 var get_selected_network = function(){
   // network_list is global
   for(var i=0; i < network_list.length; i++){
-    ssid = network_list[i]['ssid'];
-    if(document.getElementById(ssid).checked){
+    element_id = network_list[i]['uuid'];
+    if(document.getElementById(element_id).checked){
       return network_list[i];
     }
   }
