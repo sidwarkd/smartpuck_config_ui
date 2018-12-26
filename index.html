@@ -15,11 +15,14 @@
   <h2>Let's get your puck connected!</h2>
     <p>
       <ol>
-        <li>Plug in your puck. You can connect it to a wall charger or a computer.</li>
-        <image src='https://via.placeholder.com/300x150' />
-        <li>Disconnect from your current WiFi and connect to the new WiFi hotspot created by your puck that starts with 'MySmartPuck'</li>
+        <li>Use the provided cable to plug in your puck. You can connect it to your phone charger or a computer.</li>
+        <image src='images/puck_plugin.gif' style="width:150px;" />
+        <image src='images/laptop_plugin.gif' style="width:150px;" />
+        <li>Disconnect from your current WiFi and connect to the new WiFi hotspot created by your puck that starts with 'MySmartPuck'. This is done in your
+          settings and the steps will depend on your device. There is no password so once selected your device will connect to the puck automatically.
+        </li>
         <image src='images/wifi-example.png' />
-        <li>Once connected press <strong>Next</strong></li>
+        <li>Once connected to the puck WiFi press <strong>Next</strong></li>
       </ol>
     <p>
     <button id='initial-button' type='button'>Next</button>
@@ -34,7 +37,8 @@
   </div>
   
   <div id='connect-div' style='display: none'>
-    <p>Select your network from the list above, enter your password, and click <strong>Connect</strong>.</p>
+    <p>Select your network from the list above, enter your password, and click <strong>Connect</strong>. The color next to each network indicates how strong the signal is. 
+      Green is excellent, orange is ok, and red is unlikely to work. To get a better signal move your puck closer to your WiFi source and scan again.</p>
     <form id='connect-form'>
       <input type='password' id='password' size='25' placeholder='password'/>
       <button type='button' class='input-helper' id='show-button'>Show</button>
@@ -50,10 +54,10 @@
 
   <div id='final-div' style='display:none;'>
     <h2>Your Puck is Configured!</h2>
-    <p>If it hasn't already, it should update with the latest stats within the next couple of minutes. After that the stats will be refreshed after each game. 
+    <p>If it hasn't already, it should update with your team's current stats within the next couple of minutes. After that the stats will be refreshed after each game. 
       All you have to do is keep it within WiFi range and it will take care of the rest.</p>
-    <p>If your puck doesn't update it's probably a password issue. If that happens, simply reload this page and go through the configuration steps again.</p>
-    <h3>Enjoy Your Puck</h3>
+    <p>If your puck doesn't update the most common issue is an incorrect password. If that happens, simply reload this page and go through the configuration steps again.</p>
+    <h3>Enjoy Your Puck!</h3>
   </div>
 
   <script src='rsa-utils/jsbn_1.js'></script>
