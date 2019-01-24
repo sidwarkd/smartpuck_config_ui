@@ -1,63 +1,348 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-  <meta name='viewport' content='width=device-width, initial-scale=1'>
-  <title>Smart Puck Setup</title>
-  <link rel='stylesheet' type='text/css' href='style.css'>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="apple-touch-fullscreen" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <link rel='shortcut icon' href='favicon.png'>
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Smart Puck Setup</title>
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+  <!-- Bootstrap core CSS -->
+  <link href="bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <!-- <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet"> -->
+  <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
+    crossorigin="anonymous">
+
+  <!-- Custom styles for this template -->
+  <link href="style.css" rel="stylesheet">
+
 </head>
 
-<body>
-  <h1 style='text-decoration: underline;'>Smart Puck Setup</h1>
-  
-  <div id='initial-div' style='display: none'>
-  <h2>Let's get your puck connected!</h2>
-    <p>
-      <ol>
-        <li>Use the provided cable to plug in your puck. You can connect it to your phone charger or a computer.</li>
-        <image src='images/puck_plugin.gif' style="width:150px;" />
-        <image src='images/laptop_plugin.gif' style="width:150px;" />
-        <li>Disconnect from your current WiFi and connect to the new WiFi hotspot created by your puck that starts with 'MySmartPuck'. This is done in your
-          settings and the steps will depend on your device. There is no password so once selected your device will connect to the puck automatically.
+<body id="page-top">
+
+  <div id='get-started-step' class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step first-step">
+    <div class="container">
+      <h1 class="display-4">Smart Puck Setup</h1>
+      <p class="lead text-white">Thank you so much for purchasing a Smart Puck. Getting it set up should
+        only take a few minutes so let's get started.</p>
+      <div class="alert alert-warning" role="alert">You may have a warning in your browser
+        telling you this page is insecure. That's because your browser is concerned about us trying to
+        connect to your puck. This is normal. The setup process doesn't transfer any of your data over the internet.
+        Your WiFi password will be sent directly to the puck from your device in an encrypted way.</div>
+
+      <button class="btn btn-primary clickable" id="getting-started-btn" attr-goto="connect-puck-step">Get Started</button>
+    </div>
+  </div>
+
+  <div id="connect-puck-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step" style="display:none;">
+    <div class="container">
+      <img src="images/puck_plugin.gif" class="img-fluid" alt="...">
+      <h3>Connect the Puck</h3>
+      <p class="lead">Connect the provided USB cable to your puck.</p>
+      <button class="btn btn-primary clickable" id="connect-puck-next" attr-goto="supply-power-step">Next</button>
+    </div>
+  </div>
+
+
+  <div id="supply-power-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step" style="display:none;">
+    <div class="container">
+      <img src="images/laptop_plugin.gif" class="img-fluid" alt="...">
+      <h3>Supply Power</h3>
+      <p class="lead">Connect the USB cable to a power source such as a cell phone charger or laptop.</p>
+      <button class="btn btn-primary clickable" id="supply-power-next" attr-goto="select-device-step">Next</button>
+    </div>
+  </div>
+
+  <div id="select-device-step" class="jumbotron jumbotron-fluid bg-black text-center wizard-step" style="display:none;">
+    <div class="container">
+      <p class="lead text-white">What kind of device are you using to configure your puck?</p>
+      <div class="card-deck">
+        <div id="apple-device" class="card clickable" attr-goto="apple-device-selection-step">
+          <img src="images/apple_logo.png" class="card-img-top" alt="...">
+          <div class="card-body">
+
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">Apple</small>
+          </div>
+        </div>
+        <div id="android-device" class="card clickable" attr-goto="android-wifi-instructions-step">
+          <img src="images/android_logo.png" class="card-img-top" alt="...">
+          <div class="card-body">
+
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">Android</small>
+          </div>
+        </div>
+        <div class="card clickable">
+          <img src="images/windows_logo.png" class="card-img-top" alt="...">
+          <div class="card-body">
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">Windows</small>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="apple-device-selection-step" class="jumbotron jumbotron-fluid bg-black text-center wizard-step" style="display:none;">
+    <div class="container">
+      <p class="lead text-white">What kind of Apple device are you using?</p>
+      <div class="card-deck">
+
+        <div class="card clickable" attr-goto="ios-wifi-instructions-step">
+          <img src="images/iphone_stock.png" class="card-img-top" alt="...">
+          <div class="card-body">
+
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">iPhone</small>
+          </div>
+        </div>
+
+        <div class="card clickable" attr-goto="ios-wifi-instructions-step">
+          <img src="images/ipad_stock.png" class="card-img-top" alt="...">
+          <div class="card-body">
+
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">iPad</small>
+          </div>
+        </div>
+
+        <div class="card clickable" attr-goto="macbook-wifi-instructions-step">
+          <img src="images/macbook_stock.png" class="card-img-top" alt="...">
+          <div class="card-body">
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">Macbook</small>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div id="ios-wifi-instructions-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step"
+    style="display:none;">
+    <div class="container">
+      <h1 class="display-4">WiFi Setup</h1>
+      <p>To configure the puck we need to disconnect your device from the existing WiFi and connect
+        directly to the puck which has created it's own temporary WiFi network. Follow the steps
+        below to get connected.
+      </p>
+
+      <ol class="text-left">
+        <li>Open the <strong>Settings</strong> app <img src="images/apple_settings_logo.png" height="30" width="30" /></li>
+        <li>Choose <strong>Wi-Fi</strong> to open the WiFi settings</li>
+        <li>Ensure WiFi is enabled and select the puck's network. It will begin with
+          <strong>MySmartPuck-</strong> followed by several characters similar to the following
         </li>
-        <image src='images/wifi-example.png' />
-        <li>Once connected to the puck WiFi press <strong>Next</strong></li>
+        <img src="images/wifi-example.png" class="img-fluid rounded" />
+        <li>Once your device is connected to the puck WiFi your settings will look similar to the following</li>
+        <img src="images/wifi_example_post.png" class="img-fluid rounded" />
+        <li>Return to this setup page once connected and click <strong>Next</strong></li>
+
       </ol>
-    <p>
-    <button id='initial-button' type='button'>Next</button>
-  </div>
-  
-  <div id='scan-div' style='display: none'>
-    <p>I found your puck! Now we just need to tell it how to connect to your local network. Click the <strong>Scan</strong> button below to search for wireless networks.</p>
-    <button id='scan-button' type='button'>Scan</button>
+
+      <button class="btn btn-primary clickable" attr-goto="finding-puck-step">Next</button>
+    </div>
   </div>
 
-  <div id='networks-div'>
-  </div>
-  
-  <div id='connect-div' style='display: none'>
-    <p>Select your network from the list above, enter your password, and click <strong>Connect</strong>. The color next to each network indicates how strong the signal is. 
-      Green is excellent, orange is ok, and red is unlikely to work. To get a better signal move your puck closer to your WiFi source and scan again.</p>
-    <form id='connect-form'>
-      <input type='password' id='password' size='25' placeholder='password'/>
-      <button type='button' class='input-helper' id='show-button'>Show</button>
-      <button type='submit' id='connect-button'>Connect</button>
-    </form>
-    <p>Don't see your network? Move your puck closer to your WiFi source and then click the <strong>Scan Again</strong> button above.</p>
+  <div id="macbook-wifi-instructions-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step"
+    style="display:none;">
+    <div class="container">
+      <h1 class="display-4">WiFi Setup</h1>
+      <p>To configure the puck we need to disconnect your device from the existing WiFi and connect
+        directly to the puck which has created it's own temporary WiFi network. Follow the steps
+        below to get connected.
+      </p>
+
+      <ol class="text-left">
+        <li>Open <strong>System Preferences</strong> and select <strong>Network</strong>.
+          Alternatively if you have the WiFi indicator in your menu bar you can click it to show a list of available
+          networks. It's normally located in the upper righthand corner of your screen.</li>
+
+        <img src="images/macbook_wifi_example.png" class="img-fluid rounded" /><br /><br />
+        <h3 class="text-center">OR</h3>
+        <img src="images/macbook_wifi_menu_bar.png" class="img-fluid rounded" /><br /><br />
+
+        <li>Ensure WiFi is enabled and select the puck's network from the list. It will begin with <strong>MySmartPuck-</strong>
+          followed by several characters similar to the images above</li>
+        <li>Once your device is connected to the puck WiFi your settings will look similar to the following</li>
+
+        <img src="images/macbook_wifi_example_post.png" class="img-fluid rounded" /><br /><br />
+        <h3 class="text-center">OR</h3>
+        <img src="images/macbook_wifi_menu_bar_post.png" class="img-fluid rounded" /><br /><br />
+
+        <li>Return to this setup page once connected and click <strong>Next</strong></li>
+      </ol>
+
+      <button class="btn btn-primary clickable" attr-goto="finding-puck-step">Next</button>
+    </div>
   </div>
 
-  <div id='device-id-div' style='display: none'>
-    <h3>Device Serial Number:</h3>
-    <p id='device-id' size='20' value='' disabled></p>
+  <div id="android-wifi-instructions-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step"
+    style="display:none;">
+    <div class="container">
+      <h1 class="display-4">WiFi Setup</h1>
+      <p>To configure the puck we need to disconnect your device from the existing WiFi and connect
+        directly to the puck which has created it's own temporary WiFi network. Follow the steps
+        below to get connected.
+      </p>
+
+      <ol class="text-left">
+        <li>Open the <strong>Settings</strong> app <img src="images/android_settings_logo.png" height="30" width="30" /></li>
+        <li>Choose <strong>Connections</strong> followed by <strong>Wi-Fi</strong> to open the WiFi settings</li>
+        <li>Ensure WiFi is enabled and select the puck's network. It will begin with
+          <strong>MySmartPuck-</strong> followed by several characters similar to the following
+        </li>
+        <img src="images/wifi_example_android.png" class="img-fluid rounded" />
+        <li>When you select the puck's network it's a good idea to disable Auto reconnect</li>
+        <img src="images/no_auto_reconnect.png" class="img-fluid rounded" />
+        <li>Tap <strong>Connect</strong></li>
+        <li>Your device will notice it can't get to the internet through the puck and might show a notification like
+          the following</li>
+        <img src="images/android_no_internet_notification.png" class="img-fluid rounded" />
+        <li>Tap <strong>Dismiss</strong></li>
+        <li>Once your device is connected to the puck WiFi your settings will look similar to the following</li>
+        <img src="images/wifi_example_android_post.png" class="img-fluid rounded" />
+        <li>Return to this setup page once connected and click <strong>Next</strong></li>
+
+      </ol>
+
+      <button class="btn btn-primary clickable" attr-goto="finding-puck-step">Next</button>
+    </div>
   </div>
 
-  <div id='final-div' style='display:none;'>
-    <h2>Your Puck is Configured!</h2>
-    <p>If it hasn't already, it should update with your team's current stats within the next couple of minutes. After that the stats will be refreshed after each game. 
-      All you have to do is keep it within WiFi range and it will take care of the rest.</p>
-    <p>If your puck doesn't update the most common issue is an incorrect password. If that happens, simply reload this page and go through the configuration steps again.</p>
-    <h3>Enjoy Your Puck!</h3>
+  <div id="generic-wifi-instructions-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step"
+    style="display:none;">
+    <div class="container">
+      <h1 class="display-4">WiFi Setup</h1>
+      <p>To configure the puck we need to disconnect your device from the existing WiFi and connect
+        directly to the puck which has created it's own temporary WiFi network. Here are some generic
+        instructions on how to do that.
+      </p>
+
+      <ol class="text-left">
+        <li>Open the WiFi Settings on your device</li>
+        <li>Ensure WiFi is enabled and search for nearby WiFi networks</li>
+        <li>Select the puck's network. It will begin with
+          <strong>MySmartPuck-</strong> followed by several characters similar to the following
+        </li>
+        <img src="images/wifi-example.png" class="img-fluid rounded" />
+        <li>Dismiss any warnings about the puck WiFi not having access to the internet. It may also be
+          necessary to disable cellular data so your device doesn't ignore the puck WiFi as it does not
+          have access to the internet.
+        </li>
+        <li>Once your device is connected to the puck WiFi return to this setup page and click <strong>Next</strong></li>
+
+      </ol>
+
+      <button class="btn btn-primary clickable" attr-goto="finding-puck-step">Next</button>
+    </div>
+  </div>
+
+  <div id="finding-puck-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step" style="display:none;"
+    attr-onload="getDeviceInfo()">
+    <div class="container">
+      <h1 class="display-4">Searching</h1>
+      <p>I'm trying to connect to your puck. Please wait...
+      </p>
+      <div class="spinner-grow text-info" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="puck-found-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step" style="display:none;"
+    attr-precall="getDeviceInfo()">
+    <div class="container">
+      <h3 class="display-4">Puck Found!</h3>
+      <p>Below is a list of nearby networks the puck detected. Select your network from the list, enter your password,
+        and click <strong>Connect</strong>. Your password will be encrypted and sent directly to the puck (not over the
+        intenet) so it can connect to your WiFi network.
+      </p>
+      <p>The color next to each network indicates how strong the signal is. Green is excellent, yellow is ok, and red
+        means the signal is likely too poor for the puck to work. To get a better signal move your puck closer to 
+        your WiFi source and scan again.
+      </p>
+
+      <div class="row">
+        <div class="col-auto mr-auto"></div>
+        <div class="col-auto">
+          <span class="badge badge-secondary" style="cursor:default;" onclick="scan()">
+            <i class="fas fa-sync-alt" title="Refresh Network List"></i> Scan Again
+          </span>
+        </div>
+      </div>
+      <div id="networks-div">
+        <div id="searching-for-wifi" class="spinner-grow text-info text-center" role="status" style="display: block">
+          <span class="sr-only">Scanning for WiFi networks...</span>
+        </div>
+        <ul id="wifi_list" class="list-group text-black" style="margin-bottom: 15px; display: none;"></ul>
+      </div>
+
+      <form id="connect-form">
+        <div class="form-row align-items-center">
+          <div class="col-auto">
+            <label class="sr-only" for="password">Name</label>
+            <input type="password" class="form-control mb-2" id="password" placeholder="Your WiFi password">
+          </div>
+
+          <div class="col-auto">
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" id="showPassword" onclick="toggleShow()">
+              <label class="form-check-label" for="showPassword">
+                Show password
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
+      <button id="wifi-connect-button" type="submit" class="btn btn-primary mb-2" onclick="configure()">Connect</button>
+    </div>
+  </div>
+
+  <div id="puck-comm-error-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step" style="display:none;"
+    attr-precall="getDeviceInfo()">
+    <div class="container">
+      <h3 class="display-4">Uh oh!</h3>
+      <p>I'm having trouble finding your puck. Make sure the phone or computer you are on is connected to the
+        MySmartPuck WiFi network and try again by refreshing this page.</p>
+    </div>
+  </div>
+
+  <div id="puck-setup-finished-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step"
+    style="display:none;">
+    <div class="container">
+
+      <h3 class="display-4">Your Puck is Configured!</h3>
+
+      <p class="lead">If it hasn't already, it should update with your team's current stats within the next couple of
+        minutes. After that the stats will be refreshed after each game. All you have to do is keep it within WiFi
+        range and it will take care of the rest.</p>
+
+      <h3>Enjoy Your Puck!</h3>
+
+      <div class="alert alert-primary" role="alert">If your puck doesn't update the most common issue is an incorrect
+        password. If that happens, simply reload this page and go through the configuration steps again.</div>
+    </div>
   </div>
 
   <script src='rsa-utils/jsbn_1.js'></script>
@@ -66,12 +351,9 @@
   <script src='rsa-utils/rng.js'></script>
   <script src='rsa-utils/rsa.js'></script>
   <script src='script.js'></script>
-
+  <script>
+    documentReady();
+  </script>
 </body>
 
-
 </html>
-
-
-
-

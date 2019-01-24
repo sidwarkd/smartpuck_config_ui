@@ -6,20 +6,49 @@ var network_list;
 var public_key;
 var rsa = new RSAKey(); // requires rsa-utils/
 
-// Common DOM elements
-var scanButton = document.getElementById('scan-button');
-var initialButton = document.getElementById('initial-button');
-var connectButton = document.getElementById('connect-button');
-var showButton = document.getElementById('show-button');
-var deviceID = document.getElementById('device-id');
-var connectForm = document.getElementById('connect-form');
+var steps = [];
 
+function documentReady(){
+  steps = document.getElementById('page-top').getElementsByClassName('wizard-step');
+  firstStep = document.getElementById('page-top').getElementsByClassName('first-step')[0];
+  hideAllSteps();
+  firstStep.style.display = 'block';
 
-// Function ordered by typical user flow ---------------------------------------
+  for (var i = 0; i < steps.length; i++) {
+    var clickables = getClickablesForStep(steps[i]);
+    for (var j = 0; j < clickables.length; j++){
+      clickables[j].addEventListener('click', showNextStep);
+    }
+  }
+}
+
+function getClickablesForStep(stepElement){
+  return stepElement.getElementsByClassName('clickable');
+}
+
+function hideAllSteps(){
+  for (var i = 0; i < steps.length; i++) {
+    steps[i].style.display = 'none';
+  }
+}
+
+function showStepByName(name){
+  hideAllSteps();
+  window.scrollTo(0,0);
+  document.getElementById(name).style.display = 'block';
+}
+
+function showNextStep(){
+  showStepByName(this.getAttribute('attr-goto'));
+  var nextStep = document.getElementById(this.getAttribute('attr-goto'));
+  var onLoadlFunction = nextStep.getAttribute('attr-onload');
+  if (onLoadlFunction !== null){
+    eval(onLoadlFunction);
+  }
+}
 
 // Get important device information
 var getDeviceInfo = function() {
-  disableButtons();
   getRequest(base_url+'public-key', public_key_callback);
 }
 
@@ -40,41 +69,24 @@ var public_key_callback = {
   },
   error: function(error, resp){
     console.log(error);
-    window.alert('I\'m having trouble finding your puck. Make sure the phone or computer you are on is connected to the MySmartPuck WiFi network and try again.');
-    enableButtons();
-    initialButton.innerHTML = "Retry";
+    showStepByName('puck-comm-error-step');
   }
 };
 
 var device_id_callback = {
   success: function(resp){
     var id = resp['id'];
-    deviceID.innerText = id;
-    document.getElementById('initial-div').style.display = 'none';
-    document.getElementById('device-id-div').style.display = 'block';
-    document.getElementById('scan-div').style.display = 'block';
+    scan();
+    showStepByName('puck-found-step');
   },
   error: function(error, resp){
     console.log(error);
-    var msg = 'COMMUNICATION_ERROR';
-    deviceID.innerText = msg;
-    window.alert('Something went wrong and I couldn\'t read your puck\'s serial number. Make sure the device you are on is connected to the MySmartPuck WiFi network and try again.');
-  },
-  regardless: function() {
-    enableButtons();
-    initialButton.innerHTML = "Retry";
+    showStepByName('puck-comm-error-step');
   }
 };
 
 var scan = function(){
   console.log('Scanning...!');
-  disableButtons();
-  scanButton.innerHTML = 'Scanning...';
-  connectButton.innerHTML = 'Connect';
-
-  document.getElementById('connect-div').style.display = 'none';
-  document.getElementById('networks-div').style.display = 'none';
-  
   getRequest(base_url+'scan-ap', scan_callback, 8000); // Scan needs a slightly longer timeout than the default
 };
 
@@ -82,8 +94,8 @@ var scan_callback = {
   success: function(resp){
     network_list = resp['scans'];
     console.log('I found:');
-    var networks_div = document.getElementById('networks-div');
-    networks_div.innerHTML = ''; //start by clearing html
+    var wifi_list_element = document.getElementById('wifi_list');
+    wifi_list_element.innerHTML = ''; //start by clearing html
     
     if(network_list.length > 0){
       for(var i=0; i < network_list.length; i++){
@@ -93,29 +105,24 @@ var scan_callback = {
         ssid = network_list[i]['ssid'];
         rssi = network_list[i]['rssi'];
         console.log(network_list[i]);
-        add_wifi_option(networks_div, ssid, rssi, uuid);
+        add_wifi_option(wifi_list_element, ssid, rssi, uuid);
         // Show password and connect
-        document.getElementById('connect-div').style.display = 'block';
+        document.getElementById('searching-for-wifi').style.display = 'none';
+        document.getElementById('wifi_list').style.display = 'block';
       }
-    } else {
-      networks_div.innerHTML = '<p class=\'scanning-error\'>No networks found.</p>';
+    }
+    else{
+      document.getElementById('networks-div').innerHTML = '<div class="alert alert-danger" role="alert">No networks found. Move the puck closer to your WiFi source and scan again.</div>';
     }
   },
 
   error: function(error){
     console.log('Scanning error:' + error);
-    document.getElementById('networks-div').innerHTML = '<p class=\'scanning-error\'>Dangit! Looks like I lost my connection to your puck. Try moving your puck closer to your WiFi source, <a href=\'javascript:document.location.reload()\'>refresh the page</a> and try again.</p>';
-  },
-
-  regardless: function(){
-    scanButton.innerHTML = 'Scan Again';
-    enableButtons();
-    document.getElementById('networks-div').style.display = 'block';
+    document.getElementById('networks-div').innerHTML = '<div class="alert alert-danger" role="alert">Dangit! Looks like I lost the connection to your puck. Try moving the puck closer to your WiFi source, <a href=\'javascript:document.location.reload()\'>refresh the page</a>, and try again.</div>';
   }
 };
 
-var configure = function(evt){
-  evt.preventDefault();
+var configure = function(){
   // get user input
   var network = get_selected_network();
   var password = document.getElementById('password').value;
@@ -135,8 +142,7 @@ var configure = function(evt){
 	  jsonData.pwd = rsa.encrypt(password);
   }
   // send
-  connectButton.innerHTML = 'Sending credentials...';
-  disableButtons();
+  document.getElementById("wifi-connect-button").innerHTML = 'Sending credentials...';
   console.log('Sending credentials: ' + JSON.stringify(jsonData));
   postRequest(base_url+'configure-ap', jsonData, configure_callback);
 };
@@ -146,78 +152,48 @@ var configure_callback = {
     console.log('Credentials received by the puck. Attempting to connect to the network...');
     //Now connect to the WiFi
     postRequest(base_url+'connect-ap', {idx:0}, connect_callback);
+    showStepByName("puck-setup-finished-step");
   },
   error: function(error, resp){
     console.log('Error sending credentials to the puck: ' + error);
     window.alert('Something went wrong! Move the puck closer to your WiFi source and try again.');
-    connectButton.innerHTML = 'Retry';
-    enableButtons();
+    document.getElementById("wifi-connect-button").innerHTML = 'Retry';
   }
 };
 
 var connect_callback = {
   success: function(resp){
-    console.log('BOOM! Your puck is connected to the network.');
-    //Now connect to the WiFi
-    // Show a completion "page"
-    document.getElementById('initial-div').style.display = 'none';
-    document.getElementById('device-id-div').style.display = 'none';
-    document.getElementById('scan-div').style.display = 'none';
-    document.getElementById('networks-div').style.display = 'none';
-    document.getElementById('connect-div').style.display = 'none';
-    document.getElementById('final-div').style.display = 'block';
+    console.log('Activation of credentials successfully.');
+
   },
   error: function(error, resp){
-    document.getElementById('initial-div').style.display = 'none';
-    document.getElementById('device-id-div').style.display = 'none';
-    document.getElementById('scan-div').style.display = 'none';
-    document.getElementById('networks-div').style.display = 'none';
-    document.getElementById('connect-div').style.display = 'none';
-    document.getElementById('final-div').style.display = 'block';
+    console.log('No response received from credential activation request.');
+    console.log(error);
   }
 
 }
 
 // Helper methods --------------------------------------------------------------
 
-var disableButtons = function (){
-  initialButton.disabled = true;
-  connectButton.disabled = true;
-  scanButton.disabled = true;
-};
-
-var enableButtons = function (){
-  initialButton.disabled = false;
-  connectButton.disabled = false;
-  scanButton.disabled = false;
-};
-
 var add_wifi_option = function(parent, ssid, strength, uuid){
-  var radio = document.createElement('INPUT');
-  radio.type = 'radio';
-  radio.value = ssid;
-  radio.id = uuid;
-  radio.name = 'ssid';
-  radio.className = 'radio' ;
-  var div = document.createElement('DIV');
-  div.className = 'radio-div';
-  div.appendChild(radio);
-  var label = document.createElement('label');
-  label.htmlFor = ssid;
-  label.innerHTML = ssid;
-  var rssi = document.createElement('span');
-  rssi.className = rssiToCssClass(strength);
-  rssi.title = 'RSSI: ' + strength;
-  label.appendChild(rssi)
-  div.appendChild(label);
-  parent.appendChild(div);
+  var wifi_li = document.createElement('LI');
+  wifi_li.onclick = function(){setActiveWiFi(wifi_li)};
+  wifi_li.className = "list-group-item d-flex justify-content-between align-items-center wifi-option";
+  wifi_li.innerText = ssid;
+  wifi_li.id = uuid;
+  var signal_strength_badge = document.createElement('SPAN');
+  signal_strength_badge.innerHTML = "&nbsp;";
+  signal_strength_badge.className = rssiToCssClass(strength);
+  signal_strength_badge.title = 'RSSI: ' + strength;
+  wifi_li.appendChild(signal_strength_badge);
+  parent.appendChild(wifi_li);
 };
 
 var get_selected_network = function(){
   // network_list is global
   for(var i=0; i < network_list.length; i++){
     element_id = network_list[i]['uuid'];
-    if(document.getElementById(element_id).checked){
+    if(document.getElementById(element_id).classList.contains('active')){
       return network_list[i];
     }
   }
@@ -225,13 +201,11 @@ var get_selected_network = function(){
 
 var toggleShow = function(){
   var passwordInput = document.getElementById('password');
-  inputType = passwordInput.type;
+  var passwordShowCheckbox = document.getElementById('showPassword');
   
-  if(inputType === 'password'){
-    showButton.innerHTML = 'Hide';
+  if(passwordShowCheckbox.checked){
     passwordInput.type = 'text';
   } else {
-    showButton.innerHTML = 'Show';
     passwordInput.type = 'password';
   }
 };
@@ -311,26 +285,6 @@ function getParameterByName(name, url) {
     return decodeURIComponent(results[2]/* .replace(/\+/g, " ")*/); // "+" is important in CC
 }
 
-// Attach events
-if (scanButton.addEventListener) {  // For all major browsers
-    initialButton.addEventListener('click', getDeviceInfo)
-    showButton.addEventListener('click', toggleShow);
-    scanButton.addEventListener('click', scan);
-    connectForm.addEventListener('submit', configure);
-} else if (scanButton.attachEvent) { // For IE 8 and earlier
-    initialButton.attachEvent('onclick', getDeviceInfo);
-    showButton.attachEvent('onclick', toggleShow);
-    scanButton.attachEvent('onclick', scan);
-    connectForm.attachEvent('onsubmit', configure);
-}
-
-// Set initial view depending on whether hosted externally or on device
-if (window.location.hostname === '192.168.0.1') {
-  document.getElementById('device-id-div').style.display = 'block';
-} else {
-  document.getElementById('initial-div').style.display = 'block';
-}
-
 function rssiToCssClass(rssi){
   // -30dBm Amazing
   // -67dBm Very Good
@@ -338,16 +292,28 @@ function rssiToCssClass(rssi){
   // -80dBm Not Good
   // -90dBm Unusable
 
-  classString = 'signal-indicator ';
+  classString = 'badge badge-pill ';
   if (rssi >= -67){
-    classString += 'good-wifi';
+    classString += 'badge-success';
   }
   else if (rssi >= -80){
-    classString += 'ok-wifi';
+    classString += 'badge-warning';
   }
   else{
-    classString += 'bad-wifi';
+    classString += 'badge-danger';
   }
 
   return classString;
+}
+
+function clearWiFiSelection(){
+  wifi_list = document.getElementById('wifi_list').getElementsByTagName('li');
+  for (var i = 0; i < wifi_list.length; i++) {
+    wifi_list[i].classList.remove('active');
+  }
+}
+
+function setActiveWiFi(o){
+  clearWiFiSelection();
+  o.classList.add('active');
 }
