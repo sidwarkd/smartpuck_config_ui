@@ -48,7 +48,7 @@
 
   <div id="connect-puck-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step" style="display:none;">
     <div class="container">
-      <img src="images/puck_plugin.gif" class="img-fluid" alt="...">
+      <img src="images/puck_plugin.gif" class="img-fluid" alt="Plugging USB cable into puck">
       <h3>Connect the Puck</h3>
       <p class="lead">Connect the provided USB cable to your puck.</p>
       <button class="btn btn-primary clickable" id="connect-puck-next" attr-goto="supply-power-step">Next</button>
@@ -58,7 +58,7 @@
 
   <div id="supply-power-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step" style="display:none;">
     <div class="container">
-      <img src="images/laptop_plugin.gif" class="img-fluid" alt="...">
+      <img src="images/laptop_plugin.gif" class="img-fluid" alt="Plugging USB cable into laptop">
       <h3>Supply Power</h3>
       <p class="lead">Connect the USB cable to a power source such as a cell phone charger or laptop.</p>
       <button class="btn btn-primary clickable" id="supply-power-next" attr-goto="select-device-step">Next</button>
@@ -67,10 +67,10 @@
 
   <div id="select-device-step" class="jumbotron jumbotron-fluid bg-black text-center wizard-step" style="display:none;">
     <div class="container">
-      <p class="lead text-white">What kind of device are you using to configure your puck?</p>
+      <p class="lead text-white">Select the type of device you are using to configure your puck.</p>
       <div class="card-deck">
         <div id="apple-device" class="card clickable" attr-goto="apple-device-selection-step">
-          <img src="images/apple_logo.png" class="card-img-top" alt="...">
+          <img src="images/apple_logo.png" class="card-img-top" alt="Apple Logo">
           <div class="card-body">
 
           </div>
@@ -79,7 +79,7 @@
           </div>
         </div>
         <div id="android-device" class="card clickable" attr-goto="android-wifi-instructions-step">
-          <img src="images/android_logo.png" class="card-img-top" alt="...">
+          <img src="images/android_logo.png" class="card-img-top" alt="Android Logo">
           <div class="card-body">
 
           </div>
@@ -87,8 +87,8 @@
             <small class="text-muted">Android</small>
           </div>
         </div>
-        <div class="card clickable">
-          <img src="images/windows_logo.png" class="card-img-top" alt="...">
+        <div id="windows-device" class="card clickable" attr-goto="windows-wifi-instructions-step">
+          <img src="images/windows_logo.png" class="card-img-top" alt="Windows Logo">
           <div class="card-body">
           </div>
           <div class="card-footer">
@@ -96,6 +96,9 @@
           </div>
         </div>
 
+      </div>
+      <div class="col-auto" style="margin-top:15px;">
+          <span class="badge badge-secondary clickable" style="pointer:default;" attr-goto="generic-wifi-instructions-step">Other Device Type</span>
       </div>
     </div>
   </div>
@@ -106,7 +109,7 @@
       <div class="card-deck">
 
         <div class="card clickable" attr-goto="ios-wifi-instructions-step">
-          <img src="images/iphone_stock.png" class="card-img-top" alt="...">
+          <img src="images/iphone_stock.png" class="card-img-top" alt="iPhone image">
           <div class="card-body">
 
           </div>
@@ -116,7 +119,7 @@
         </div>
 
         <div class="card clickable" attr-goto="ios-wifi-instructions-step">
-          <img src="images/ipad_stock.png" class="card-img-top" alt="...">
+          <img src="images/ipad_stock.png" class="card-img-top" alt="iPad image">
           <div class="card-body">
 
           </div>
@@ -126,7 +129,7 @@
         </div>
 
         <div class="card clickable" attr-goto="macbook-wifi-instructions-step">
-          <img src="images/macbook_stock.png" class="card-img-top" alt="...">
+          <img src="images/macbook_stock.png" class="card-img-top" alt="Macbook image">
           <div class="card-body">
           </div>
           <div class="card-footer">
@@ -149,14 +152,20 @@
 
       <ol class="text-left">
         <li>Open the <strong>Settings</strong> app <img src="images/apple_settings_logo.png" height="30" width="30" /></li>
-        <li>Choose <strong>Wi-Fi</strong> to open the WiFi settings</li>
-        <li>Ensure WiFi is enabled and select the puck's network. It will begin with
-          <strong>MySmartPuck-</strong> followed by several characters similar to the following
+        <li>Choose <strong>Wi-Fi</strong> to open the WiFi settings.</li>
+        <li>Ensure WiFi is enabled and select the puck's network. It may take up to 30 seconds to appear. It will begin with
+          <strong>MySmartPuck-</strong> followed by several characters similar to the image below. 
+          <strong>Note:</strong> your puck network will have a different name than the network shown in the image.
         </li>
-        <img src="images/wifi-example.png" class="img-fluid rounded" />
+
+        <br /><img src="images/wifi-example.png" class="img-fluid rounded" /><br /><br />
+
+
         <li>Once your device is connected to the puck WiFi your settings will look similar to the following</li>
-        <img src="images/wifi_example_post.png" class="img-fluid rounded" />
-        <li>Return to this setup page once connected and click <strong>Next</strong></li>
+
+        <br /><img src="images/wifi_example_post.png" class="img-fluid rounded" /><br /><br />
+
+        <li>Return to this setup page once connected and click <strong>Next</strong>.</li>
 
       </ol>
 
@@ -169,28 +178,48 @@
     <div class="container">
       <h1 class="display-4">WiFi Setup</h1>
       <p>To configure the puck we need to disconnect your device from the existing WiFi and connect
-        directly to the puck which has created it's own temporary WiFi network. Follow the steps
-        below to get connected.
+        directly to the puck which has created it's own temporary WiFi network. In OSX this can be 
+        done through System Preferences or via the menu bar. Instructions for both are provided below.
       </p>
 
+      <hr/>
+      <h3>Via the Menu Bar</h3>
+      <hr/>
       <ol class="text-left">
-        <li>Open <strong>System Preferences</strong> and select <strong>Network</strong>.
-          Alternatively if you have the WiFi indicator in your menu bar you can click it to show a list of available
-          networks. It's normally located in the upper righthand corner of your screen.</li>
+        <li>Click on the WiFi indicator in your menu bar to show a list of available WiFi
+            networks. It's normally located in the upper righthand corner of your screen.</li>
 
-        <img src="images/macbook_wifi_example.png" class="img-fluid rounded" /><br /><br />
-        <h3 class="text-center">OR</h3>
-        <img src="images/macbook_wifi_menu_bar.png" class="img-fluid rounded" /><br /><br />
+        <br /><img src="images/macbook_wifi_menu_bar.png" class="img-fluid rounded" /><br /><br />
 
         <li>Ensure WiFi is enabled and select the puck's network from the list. It will begin with <strong>MySmartPuck-</strong>
-          followed by several characters similar to the images above</li>
-        <li>Once your device is connected to the puck WiFi your settings will look similar to the following</li>
+          followed by several characters similar to the image above.
+          <strong>Note:</strong> your puck network will have a different name than the network shown in the image.
+        </li>
+        <li>Once your device is connected to the puck WiFi a check will appear next to the network name as follows</li>
 
-        <img src="images/macbook_wifi_example_post.png" class="img-fluid rounded" /><br /><br />
-        <h3 class="text-center">OR</h3>
-        <img src="images/macbook_wifi_menu_bar_post.png" class="img-fluid rounded" /><br /><br />
+        <br /><img src="images/macbook_wifi_menu_bar_post.png" class="img-fluid rounded" /><br /><br />
 
-        <li>Return to this setup page once connected and click <strong>Next</strong></li>
+        <li>Return to this setup page once connected and click <strong>Next</strong> below.</li>
+      </ol>
+
+      <hr/>
+      <h3>Via System Preferences</h3>
+      <hr/>
+      <ol class="text-left">
+        <li>Open <strong>System Preferences</strong> and select <strong>Network</strong>.</li>
+
+        <br /><img src="images/macbook_wifi_example.png" class="img-fluid rounded" /><br /><br />
+
+        <li>Ensure WiFi is enabled and select the puck's network from the dropdown. It will begin with <strong>MySmartPuck-</strong>
+          followed by several characters.</li>
+
+        <li>Once your device is connected to the puck WiFi your settings will look similar to the image below.
+        <strong>Note:</strong> your puck network will have a different name than the network shown in the image.
+        </li>
+
+        <br /><img src="images/macbook_wifi_example_post.png" class="img-fluid rounded" /><br /><br />
+
+        <li>Return to this setup page once connected and click <strong>Next</strong>.</li>
       </ol>
 
       <button class="btn btn-primary clickable" attr-goto="finding-puck-step">Next</button>
@@ -210,25 +239,107 @@
         <li>Open the <strong>Settings</strong> app <img src="images/android_settings_logo.png" height="30" width="30" /></li>
         <li>Choose <strong>Connections</strong> followed by <strong>Wi-Fi</strong> to open the WiFi settings</li>
         <li>Ensure WiFi is enabled and select the puck's network. It will begin with
-          <strong>MySmartPuck-</strong> followed by several characters similar to the following
+          <strong>MySmartPuck-</strong> followed by several characters similar to the image below.
+          <strong>Note:</strong> your puck network will have a different name than the network shown in the image.
         </li>
-        <img src="images/wifi_example_android.png" class="img-fluid rounded" />
-        <li>When you select the puck's network it's a good idea to disable Auto reconnect</li>
-        <img src="images/no_auto_reconnect.png" class="img-fluid rounded" />
+
+        <br /><img src="images/wifi_example_android.png" class="img-fluid rounded" /><br /><br />
+
+        <li>When you select the puck's network disable "Auto reconnect"</li>
+
+        <br /><img src="images/no_auto_reconnect.png" class="img-fluid rounded" /><br /><br />
+
         <li>Tap <strong>Connect</strong></li>
         <li>Your device will notice it can't get to the internet through the puck and might show a notification like
-          the following</li>
-        <img src="images/android_no_internet_notification.png" class="img-fluid rounded" />
+          the image below.</li>
+
+        <br /><img src="images/android_no_internet_notification.png" class="img-fluid rounded" /><br /><br />
+
         <li>Tap <strong>Dismiss</strong></li>
         <li>Once your device is connected to the puck WiFi your settings will look similar to the following</li>
-        <img src="images/wifi_example_android_post.png" class="img-fluid rounded" />
-        <li>Return to this setup page once connected and click <strong>Next</strong></li>
+
+        <br /><img src="images/wifi_example_android_post.png" class="img-fluid rounded" /><br /><br />
+
+        <li>Return to this setup page once connected and click <strong>Next</strong>.</li>
 
       </ol>
 
       <button class="btn btn-primary clickable" attr-goto="finding-puck-step">Next</button>
     </div>
   </div>
+
+  <div id="windows-wifi-instructions-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step"
+    style="display:none;">
+    <div class="container">
+      <h1 class="display-4">WiFi Setup</h1>
+      <p>To configure the puck we need to disconnect your device from the existing WiFi and connect
+        directly to the puck which has created it's own temporary WiFi network. In Windows this can be 
+        done through the Settings app or via the menu bar. Instructions for both are provided below.
+      </p>
+
+      <hr/>
+      <h3>Via the Menu Bar</h3>
+      <hr/>
+      <ol class="text-left">
+          <li>Click on the WiFi/Network indicator in your menu bar to show a list of available WiFi
+            networks. It's normally located in the lower righthand corner of your screen by the date and time.
+            A list of available networks will appear.</li>
+  
+          <br/><img src="images/wifi_example_windows.png" class="img-fluid rounded" /><br /><br />
+  
+          <li>Ensure WiFi is enabled and select the puck's network from the list. It will begin with <strong>MySmartPuck-</strong>
+            followed by several characters similar to the image below. <strong>Note:</strong> your puck 
+            network will have a different name than the network shown in the image.</li>
+  
+          <br/><img src="images/wifi_example_windows.png" class="img-fluid rounded" /><br /><br />
+  
+          <li>After selecting the puck network you will be prompted to connect to it. Be sure "Connect automatically" is unchecked.</li>
+  
+          <br/><img src="images/windows_select_network.png" class="img-fluid rounded" /><br /><br />
+  
+          <li>Click <strong>Connect</strong>. It may take up to a minute to connect to the puck.</li>
+          <li>Once your device is connected to the puck WiFi the network will look similar to the following</li>
+  
+          <br/><img src="images/wifi_example_windows_post.png" class="img-fluid rounded" /><br /><br />
+  
+          <li>Return to this setup page once connected and click <strong>Next</strong></li>
+      </ol>
+
+      <hr/>
+      <h3>Via The Settings App</h3>
+      <hr/>
+      <ol class="text-left">
+        <li>Open the <strong>Settings</strong> app <img src="images/windows_settings_icon.png" height="30" width="30" /></li>
+        <li>Select <strong>Network & Internet</strong>.
+
+        <br/><br/><img src="images/windows_network_icon.png" class="img-fluid rounded" /><br /><br />
+
+        <li>On the Network Status page click "Show available networks". The network list will appear.</li>
+
+        <br/><img src="images/windows_network_settings.png" class="img-fluid rounded" /><br /><br />
+
+        <li>Select the puck's network from the list. It will begin with <strong>MySmartPuck-</strong>
+          followed by several characters similar to the image below. <strong>Note:</strong> your puck 
+          network will have a different name than the network shown in the image.</li>
+
+        <br/><img src="images/wifi_example_windows.png" class="img-fluid rounded" /><br /><br />
+
+        <li>After selecting the puck network you will be prompted to connect to it. Be sure "Connect automatically" is unchecked.</li>
+
+        <br/><img src="images/windows_select_network.png" class="img-fluid rounded" /><br /><br />
+
+        <li>Click <strong>Connect</strong>. It may take up to a minute to connect to the puck.</li>
+        <li>Once your device is connected to the puck WiFi the network will look similar to the following</li>
+
+        <br/><img src="images/wifi_example_windows_post.png" class="img-fluid rounded" /><br /><br />
+
+        <li>Return to this setup page once connected and click <strong>Next</strong> below.</li>
+      </ol>
+
+      <button class="btn btn-primary clickable" attr-goto="finding-puck-step">Next</button>
+    </div>
+  </div>
+
 
   <div id="generic-wifi-instructions-step" class="jumbotron jumbotron-fluid bg-black text-white text-center wizard-step"
     style="display:none;">
@@ -240,17 +351,20 @@
       </p>
 
       <ol class="text-left">
-        <li>Open the WiFi Settings on your device</li>
-        <li>Ensure WiFi is enabled and search for nearby WiFi networks</li>
+        <li>Open the WiFi Settings on your device.</li>
+        <li>Ensure WiFi is enabled and search for nearby WiFi networks.</li>
         <li>Select the puck's network. It will begin with
-          <strong>MySmartPuck-</strong> followed by several characters similar to the following
+          <strong>MySmartPuck-</strong> followed by several characters similar to the image below.
+          <strong>Note:</strong> your puck network will have a different name than the network shown in the image.
         </li>
-        <img src="images/wifi-example.png" class="img-fluid rounded" />
+
+        <br /><img src="images/wifi-example.png" class="img-fluid rounded" /><br /><br />
+
         <li>Dismiss any warnings about the puck WiFi not having access to the internet. It may also be
           necessary to disable cellular data so your device doesn't ignore the puck WiFi as it does not
           have access to the internet.
         </li>
-        <li>Once your device is connected to the puck WiFi return to this setup page and click <strong>Next</strong></li>
+        <li>Once your device is connected to the puck WiFi return to this setup page and click <strong>Next</strong>.</li>
 
       </ol>
 

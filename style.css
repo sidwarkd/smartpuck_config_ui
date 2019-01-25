@@ -208,6 +208,11 @@
   }
 }
 
+.wizard-step .container hr {
+  border-width: 0.25rem;
+  border-top: 1px solid #64a19d;
+}
+
 .contact-section {
   padding: 5rem 0 0;
 }
