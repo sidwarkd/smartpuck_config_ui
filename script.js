@@ -118,7 +118,7 @@ var scan_callback = {
 
   error: function(error){
     console.log('Scanning error:' + error);
-    document.getElementById('networks-div').innerHTML = '<div class="alert alert-danger" role="alert">Dangit! Looks like I lost the connection to your puck. Try moving the puck closer to your WiFi source, <a href=\'javascript:document.location.reload()\'>refresh the page</a>, and try again.</div>';
+    document.getElementById('networks-div').innerHTML = '<div class="alert alert-danger" role="alert">Dangit! Looks like I lost the connection to your puck. Try moving the puck closer to your WiFi source and <a href=\'javascript:document.location.reload()\'>try again</a>.</div>';
   }
 };
 
@@ -152,7 +152,7 @@ var configure_callback = {
     console.log('Credentials received by the puck. Attempting to connect to the network...');
     //Now connect to the WiFi
     postRequest(base_url+'connect-ap', {idx:0}, connect_callback);
-    showStepByName("puck-setup-finished-step");
+    showStepByName("puck-test-step");
   },
   error: function(error, resp){
     console.log('Error sending credentials to the puck: ' + error);
